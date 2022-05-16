@@ -61,13 +61,13 @@ if __name__ == '__main__':
     plot_model(vae, to_file = 'vae.pdf', show_shapes = True)
 
     data_train = data_loader('datasets/shapenet10_chairs_nr.tar')
-
-    vae.fit(
+    with tf.device("/device:GPU:0"):
+        vae.fit(
         data_train,
         epochs = epoch_num,
         batch_size = batch_size,
         validation_data = (data_train, None),
         callbacks = [LearningRateScheduler(learning_rate_scheduler)]
-    )
+      )
 
     vae.save_weights('vae.h5')
